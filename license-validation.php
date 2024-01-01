@@ -1,7 +1,6 @@
 <?php
-
 // Simulated database of valid license keys
-$validLicenseKeys = ['kpxwxrsoly', 'kpxwxrsoly12', 'kpxwxrsoly0']; 
+$validLicenseKeys = ['kpxwxrsoly' , 'kpxwxrsoly12' , 'kpxwxrsoly0']; 
 
 // Function to validate a license key
 function validateLicenseKey($key) {
@@ -16,26 +15,26 @@ function validateLicenseKey($key) {
 }
 
 // Handle API requests
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Check if the request contains a 'key' parameter
-    if (isset($_POST['key'])) {
-        $licenseKey = $_POST['key'];
-        
-        // Validate the license key
-        $isValid = validateLicenseKey($licenseKey);
-        
-        // Prepare JSON response
-        $response = [
-            'success' => true,
-            'message' => $isValid ? 'License key is valid!' : 'Invalid license key.'
-        ];
-    } else {
-        // Invalid request format
-        $response = [
-            'success' => false,
-            'message' => 'Invalid request format. Missing license key.'
-        ];
-    }
+    // Check if the request contains a 'license_key' parameter
+    if (isset($_POST['license_key'])) {
+    $licenseKey = $_POST['license_key'];
+    // Validate the license key
+    $isValid = validateLicenseKey($licenseKey);
+    // Prepare JSON response based on validation
+    $response = [
+        'success' => true,
+        'valid' => $isValid
+    ];
+} else {
+    // Invalid request format
+    $response = [
+        'success' => false,
+        'message' => 'Invalid request format. Missing license key EasyPazy.'
+    ];
+}
+
     
     // Send JSON response
     header('Content-Type: application/json');
