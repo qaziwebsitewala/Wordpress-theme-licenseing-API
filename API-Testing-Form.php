@@ -5,6 +5,7 @@
     <title>License Validation</title>
 </head>
 <body>
+
     <h1>License Key Validation</h1>
     <form action="" method="post">
         <label for="license_key">Enter your license key:</label><br>
@@ -14,29 +15,27 @@
 
     <?php
     if (isset($_POST['submit'])) {
-        
-		$licenseKey = 'kpxwxrsoly'; // Replace with your license key
-
+        $licenseKey = $_POST['license_key'];
+		//var_dump($licenseKey); // Output response for debugging
         // API URL for license validation
-        $apiUrl = 'http://localhost/blockFY/LicenseKey-Api/license-validation.php';
+        $apiUrl = 'http://localhost/blockFY/wp-content/themes/blockfly/LicenseKey-Api/license-validation.php';
 
-                
-		$ch = curl_init($apiUrl);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['license_key' => $licenseKey])); // Adjust the parameter name if needed
-		
-		
-		// Execute cURL request and handle response
+        // Create cURL request
+        $ch = curl_init($apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['license_key' => $licenseKey]));
+
+        // Execute cURL request
         $response = curl_exec($ch);
 
         if ($response === false) {
             echo 'cURL Error: ' . curl_error($ch);
         } else {
             $result = json_decode($response, true);
-            var_dump($result); // Output API response for debugging
+           // var_dump($result); // Output API response for debugging
 
-            if ($result && isset($result['success']) && $result['success'] === true) {
+            if ($result && isset($result['valid']) && $result['valid'] === true) {
                 echo '<p style="color: green;">License key is valid!</p>';
                 // Further logic or actions for a valid license
             } else {
@@ -48,5 +47,6 @@
         curl_close($ch);
     }
     ?>
+
 </body>
 </html>
